@@ -22,4 +22,4 @@ Explores the design of parameterized abstract data types and variable scoping me
 ---
 
 ### pure-lisp-programming
-Builds a simple Lisp program to explore functional programming concepts. Pure functional programming relies entirely on recursion, without using variables, loops, or mutable state. Focuses on purely functional language design, first-class and higher-order functions, and the foundations of functional computation and evaluation. Demonstrates how 
+Builds a simple Lisp program to explore functional programming concepts. Pure functional programming relies entirely on recursion, without using variables, loops, or mutable state. Focuses on purely functional language design, first-class and higher-order functions, and the foundations of functional computation and evaluation.
