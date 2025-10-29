@@ -18,3 +18,8 @@ Acts as a compiler that translates Java source into low-level, non–object-orie
 
 ### template-adt-scoping
 Explores the design of parameterized abstract data types and variable scoping mechanisms in programming languages. Implemented using a C++ template `Vector` class, this project examines how languages support generic ADTs, contrasts static vs. dynamic scoping, and demonstrates the behavior of shallow and deep copies in memory management.
+
+---
+
+### pure-lisp-programming
+Builds a simple Lisp program to explore functional programming concepts. Pure functional programming relies entirely on recursion, without using variables, loops, or mutable state. Focuses on purely functional language design, first-class and higher-order functions, and the foundations of functional computation and evaluation. Demonstrates how 
