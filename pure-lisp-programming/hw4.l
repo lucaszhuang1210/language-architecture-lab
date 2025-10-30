@@ -97,3 +97,30 @@
         (T  (cons   (+ (car N1) (car N2) C)    (my-add2 (cdr N1) (cdr N2) 0)))
     )
 )
+
+(defun my-merge (L1 L2)
+    (cond
+        ((NULL L1)  L2)
+        ((NULL L2)  L1)
+        ((< (car L1) (car L2))   (cons (car L1) (my-merge (cdr L1) L2)))
+        (T   (cons (car L2) (my-merge L1 (cdr L2))))
+    )
+)
+
+(defun my-sublist (L1 L2)
+    (cond
+        ((NULL L1)   T)
+        ((NULL L2)   NIL)
+        ((my-sublist-match L1 L2) T)
+        (T  (my-sublist L1 (cdr L2)))
+    )
+)
+
+(defun my-sublist-match (L1 L2)
+    (cond
+        ((NULL L1)   T)
+        ((NULL L2)   NIL)
+        ((EQ (car L1) (car L2))   (my-sublist-match (cdr L1) (cdr L2)))
+        (T  nil)
+    )
+)
