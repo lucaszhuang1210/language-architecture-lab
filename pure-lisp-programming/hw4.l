@@ -74,3 +74,26 @@
         (T  (cons (car Z) (my-subst X Y (cdr Z))))
     )
 )
+
+(defun my-subset (FN L)
+    (cond
+        ((NULL L)   nil)
+        ((apply FN (cons (car L) nil))  (cons (car L) (my-subset FN (cdr L))))
+        (T  (my-subset FN (cdr L)))
+    )
+)
+
+(defun my-add (N1 N2)
+    (my-add2 N1 N2 0)
+)
+
+(defun my-add2 (N1 N2 C)
+    (cond
+        ((and (NULL N1) (NULL N2) (EQ C 0))   nil)
+        ((and (NULL N1) (NULL N2) (EQ C 1))   (cons 1 nil))
+        ((NULL N1)   (my-add2 (cons 0 nil) N2 C))
+        ((NULL N2)   (my-add2 (cons 0 nil) N1 C))
+        ((> (+ (car N1) (car N2) C) 9)    (cons   (- (+ (car N1) (car N2) C) 10)    (my-add2 (cdr N1) (cdr N2) 1)))
+        (T  (cons   (+ (car N1) (car N2) C)    (my-add2 (cdr N1) (cdr N2) 0)))
+    )
+)

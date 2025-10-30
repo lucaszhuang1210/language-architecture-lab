@@ -73,3 +73,18 @@
 ; MY-SUBST
 (print (my-subst 'B 'A '(A B (A B) (C (A B))))) ; → (A A (A A) (C (A A)))
 (terpri)
+
+
+; MY-SUBSET
+(print (my-subset 'atom '(A (B) (C D) E F G))) ; → (A E F G)
+(print (my-subset 'listp '(A (B) (C D) E F G))) ; → ((B) (C D))
+(terpri)
+
+
+; MY-ADD
+(print (my-add '(0) '(0)))                               ; → (0)
+(print (my-add '(1) '(1)))                               ; → (2)
+(print (my-add '(9) '(9)))                               ; → (8 1)
+(print (my-add '(1 1 1 1 1 1 1 1 1 1) '(9 9 9 9 9 9 9 9 9 9))) ; → (0 1 1 1 1 1 1 1 1 1 1)
+(print (my-add '(1) '(9 9 9 9 9 9 9 9 9 9)))              ; → (0 0 0 0 0 0 0 0 0 0 1)
+(terpri)
