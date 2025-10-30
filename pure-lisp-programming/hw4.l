@@ -132,3 +132,11 @@
         (T  (my-assoc A (cdr ALIST)))
     )
 )
+
+(defun my-replace (ALIST L)
+    (cond
+        ((NULL L)   nil)
+        ((my-assoc (car L) ALIST)   (cons (cdr (my-assoc (car L) ALIST)) (my-replace ALIST (cdr L))))
+        (T (cons (car L) (my-replace ALIST (cdr L))))
+    )
+)

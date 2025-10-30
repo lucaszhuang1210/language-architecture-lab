@@ -117,3 +117,14 @@
 (print (my-assoc 'B '((A . B) (C E F) (B))))  ; → (B) ;; B’s value is NIL
 (print (my-assoc 'F '((A . B) (C E F) (B))))  ; → NIL
 (terpri)
+
+
+; MY-REPLACE
+(print (my-replace
+        '((G . C) (C . G) (T . A) (A . U))
+        '(G A T C C T C C A T A T A C A A C G G T)))    ; → (C U A G G A G G U A U A U G U U G C C A)
+
+(print (my-replace
+        '((UCB . UCLA) (UCSD . UCI) (BASKETBALL . TENNIS))
+        '(UCSD IS PLAYING BASKETBALL AGAINST UCB)))     ; → (UCI IS PLAYING TENNIS AGAINST UCLA)
+(terpri)
