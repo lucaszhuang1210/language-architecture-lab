@@ -124,3 +124,11 @@
         (T  nil)
     )
 )
+
+(defun my-assoc (A ALIST)
+    (cond
+        ((NULL ALIST)   nil)
+        ((EQ A (car (car ALIST)))   (car ALIST))
+        (T  (my-assoc A (cdr ALIST)))
+    )
+)

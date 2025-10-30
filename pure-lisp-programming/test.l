@@ -108,3 +108,12 @@
 (print (my-sublist '(2 4) '(1 2 3 4 5)))   ; → NIL
 (print (my-sublist '(1 3 5) '(1 2 3 4 5))) ; → NIL
 (terpri)
+
+
+; MY-ASSOC
+(print (my-assoc 'A nil))                      ; → NIL
+(print (my-assoc 'A '((A . B) (C E F) (B))))  ; → (A . B)
+(print (my-assoc 'C '((A . B) (C E F) (B))))  ; → (C E F)
+(print (my-assoc 'B '((A . B) (C E F) (B))))  ; → (B) ;; B’s value is NIL
+(print (my-assoc 'F '((A . B) (C E F) (B))))  ; → NIL
+(terpri)
