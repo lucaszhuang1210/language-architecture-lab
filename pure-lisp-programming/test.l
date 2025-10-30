@@ -38,3 +38,21 @@
 (terpri)
 
 
+; MY-MAPCAR
+(print (my-mapcar 'car '((A B C) (X Y Z) (1 2 3)))) ; → (A X 1)
+(print (my-mapcar 'cdr '((A B C) (X Y Z) (1 2 3)))) ; → ((B C) (Y Z) (2 3))
+(print (my-mapcar '1+ '(1 3 5 7)))                  ; → (2 4 6 8)
+(print (my-mapcar 'atom '(A (B) C (D) E)))          ; → (T NIL T NIL T)
+(terpri)
+
+; MY-COPY
+(print (my-copy '(A B ((C 1)) 2 3)))        ; → (A B ((C 1)) 2 3)
+(print (my-copy '(1 2 3)))                  ; → (1 2 3)
+(print (my-copy '(A B . C)))                ; → (A B . C)
+(defvar L)
+(setq L '(A (B) C))
+(print (eq L (my-copy L)))                  ; → NIL
+(terpri)
+
+
+

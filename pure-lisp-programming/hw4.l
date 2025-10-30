@@ -34,3 +34,18 @@
         (T (my-reverse2 (cdr L) (cons (car L) R)))
     )
 )
+
+(defun my-mapcar (F L)
+    (cond
+        ((NULL L) nil)
+        (T (cons  (apply F (cons (car L) nil)) (my-mapcar F (cdr L))))
+    )
+)
+
+(defun my-copy (L)
+    (cond
+        ((NULL L)   nil)
+        ((atom L)   L)
+        (T (cons (car L) (my-copy (cdr L))))
+    )
+)
