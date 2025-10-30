@@ -65,3 +65,12 @@
         (T  (cons (car L) (my-remove X (cdr L))))
     )
 )
+
+(defun my-subst (X Y Z)
+    (cond
+        ((NULL Z)   nil)
+        ((EQUAL X (car Z))  (cons Y (my-subst X Y (cdr Z))))
+        ((listp (car Z))    (cons (my-subst X Y (car Z)) (my-subst X Y (cdr Z))))
+        (T  (cons (car Z) (my-subst X Y (cdr Z))))
+    )
+)

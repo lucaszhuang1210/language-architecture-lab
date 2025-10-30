@@ -70,3 +70,6 @@
 (terpri)
 
 
+; MY-SUBST
+(print (my-subst 'B 'A '(A B (A B) (C (A B))))) ; → (A A (A A) (C (A A)))
+(terpri)
