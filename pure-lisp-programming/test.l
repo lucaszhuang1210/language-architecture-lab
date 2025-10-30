@@ -45,6 +45,7 @@
 (print (my-mapcar 'atom '(A (B) C (D) E)))          ; → (T NIL T NIL T)
 (terpri)
 
+
 ; MY-COPY
 (print (my-copy '(A B ((C 1)) 2 3)))        ; → (A B ((C 1)) 2 3)
 (print (my-copy '(1 2 3)))                  ; → (1 2 3)
@@ -54,5 +55,18 @@
 (print (eq L (my-copy L)))                  ; → NIL
 (terpri)
 
+
+; MY-NTH
+(print (my-nth '(A B C D E) 1))  ; → (A B C D E)
+(print (my-nth '(A B C D E) 3))  ; → (C D E)
+(print (my-nth '(A B C D E) 30)) ; → NIL
+(print (my-nth '(A B C D E) 0))  ; → (NIL A B C D E)
+(terpri)
+
+
+; MY-REMOVE
+(print (my-remove '(A B) '(A B (A B) A A B (A B)))) ; → (A B A A B)
+(print (my-remove 'A '(A B (A B) A B)))             ; → (B (A B) B)
+(terpri)
 
 

@@ -49,3 +49,19 @@
         (T (cons (car L) (my-copy (cdr L))))
     )
 )
+
+(defun my-nth (L N)
+    (cond
+        ((EQ N 0)   (cons nil L))
+        ((EQ N 1)   L)
+        (T (my-nth (cdr L) (- N 1)))
+    )
+)
+
+(defun my-remove (X L)
+    (cond
+        ((NULL L)   nil)
+        ((EQUAL X (car L))  (my-remove X (cdr L)))
+        (T  (cons (car L) (my-remove X (cdr L))))
+    )
+)
