@@ -23,3 +23,8 @@ Explores the design of parameterized abstract data types and variable scoping me
 
 ### lisp-programming
 Builds a simple Lisp program to explore functional programming concepts. Pure functional programming relies entirely on recursion, without using variables, loops, or mutable state. Focuses on purely functional language design, first-class and higher-order functions, and the foundations of functional computation and evaluation.
+
+---
+
+### lisp-interpreter
+Implements a simple Lisp interpreter to explore how programming languages evaluate code. This project highlights how evaluation follows clear, algorithmic rules rather than arbitrary behavior. By using functional decomposition and recursion, it strengthens understanding of interpreter structure, predictable evaluation, and recursive program execution.
