@@ -1,4 +1,4 @@
-(load "../pure-lisp-programming/hw4.l")
+(load "../lisp-programming/lisp-functions.l")
 
 ; HELLO-WORLD
 (hello-world)
