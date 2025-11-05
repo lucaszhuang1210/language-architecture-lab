@@ -1,9 +1,3 @@
-;; A simple LISP interpreter written by Dr Klefstad for ICS 141 at UC Irvine.
-;; I deleted key portions of it to allow you to learn more about evaluation.
-
-;; I inserted NIL in places where I deleted code to allow them to load and run,
-;; but nil is the wrong value to return. You must think about what to do instead.
-
 ;; Note the new top-level function, my-top, is defined at the bottom of this file
 ;; defines a new REPL read-eval-print loop that you can use to test your interpreter.
 
@@ -37,7 +31,7 @@
 ;; The previously made definitions will come back into scope when
 ;; recursive evaluation unwinds.
 
-;; We us a special global variable, called global-alist, for saving top-level
+;; We use a special global variable, called global-alist, for saving top-level
 ;; definitions made using defun or setq. Note the global-alist is passed in
 ;; to my-eval only in the call made by my-top defined below.
 
@@ -45,7 +39,11 @@
 ;; You need to write this one.
 
 (defun my-assoc (v alist)
-  nil
+    (cond
+        ((NULL alist)   nil)
+        ((EQ v (car (car alist)))   (car alist))
+        (T  (my-assoc v (cdr alist)))
+    )
 )
 
 ;; This one is done. Note the simple, clean code
