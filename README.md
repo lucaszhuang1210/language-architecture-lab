@@ -24,6 +24,21 @@ Explores the design of parameterized abstract data types and variable scoping me
 ### lisp-programming
 Builds a simple Lisp program to explore functional programming concepts. Pure functional programming relies entirely on recursion, without using variables, loops, or mutable state. Focuses on purely functional language design, first-class and higher-order functions, and the foundations of functional computation and evaluation.
 
+#### How to Run Lisp
+To run a Lisp file using SBCL (Steel Bank Common Lisp):
+
+**Command line:**
+```bash
+sbcl --script filename.lisp
+```
+
+**Interactive mode:**
+```bash
+sbcl
+(load "filename.lisp")
+```
+You can then call any function defined in your file directly within the Lisp REPL.
+
 ---
 
 ### lisp-interpreter
