@@ -41,18 +41,18 @@
 
 ;   (my-test '(print '(a b c)))
 
-  ;; giving symbols a value and evaluation of symbols
-  (my-test '(setq a '(a b c)))
-  (my-test 'a)
+;   ;; giving symbols a value and evaluation of symbols
+;   (my-test '(setq a '(a b c)))
+;   (my-test 'a)
 
-;   ;; cond - the conditional expression
-;   (my-test '(cond (nil 2 3 4 5 1)
-;                   (t   1 3 4 2)
-;                   (t   1 3 4 5 3)))
+  ;; cond - the conditional expression
+  (my-test '(cond (nil 2 3 4 5 1)
+                  (t   1 3 4 2)
+                  (t   1 3 4 5 3)))
 
-;   (my-test '(cond ((eq t nil) 1)
-;                   ((eq t t)  2)
-;                   (t         3)))
+  (my-test '(cond ((eq t nil) 1)
+                  ((eq t t)  2)
+                  (t         3)))
 
 ;   ;; defining a function and calling that function
 ;   (my-test '(defun rev (L R)

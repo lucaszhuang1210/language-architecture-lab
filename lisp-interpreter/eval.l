@@ -2,6 +2,7 @@
 ;; settings, like those defined via setq and defun, go.
 
 (defvar global-alist nil)
+;; to push a new value, (setq global-alist (cons (cons 'newvar 'newval) global-alist))  
 
 ;; Note the new top-level function, my-top, is defined at the bottom of this file
 ;; defines a new REPL read-eval-print loop that you can use to test your interpreter.
@@ -122,7 +123,9 @@
         ((eq fn 'setq) 
             (my-eval-setq (car args) (cadr args))
         )
-        ((eq fn 'cond) (my-eval-cond args alist))
+        ((eq fn 'cond) 
+            (my-eval-cond args alist)
+        )
         ((eq fn 'defun) (my-eval-defun args alist))
         ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
         ;; in this last case, function must be a variable bound to a function
@@ -137,7 +140,14 @@
 ;; in l and returns the value of the last expression
 
 (defun my-eval-list (l alist)
-  nil
+    (cond
+        ((null l) nil)
+        ((null (cdr l)) (my-eval (car l) alist))
+        (t 
+            (my-eval (car l) alist)
+            (my-eval-list (cdr l) alist)
+        )
+    )
 )
 
 ;; You need to write this one.
@@ -177,13 +187,6 @@ nil
     (my-eval var global-alist)
 )
 
-;; You need to write this one.  You should know how cond works at this point.
-;; Remember, cond clauses have one or more expressions in each clause.
-
-(defun my-eval-cond (clauses alist)
-nil
-)
-
 ;; You need to write this one.
 ;; Hint: just push the function body onto the global alist.  It is already an
 ;; association, e.g., (equal (L1 L2) (cond (...))) and (assoc 'equal in
@@ -195,9 +198,14 @@ nil
 nil
 )
 
-
-
-;; to push a new value, (setq global-alist (cons (cons 'newvar 'newval) global-alist))
+(defun my-eval-cond (clauses alist)
+    (cond 
+        ((null clauses) nil)
+        ((my-eval (caar clauses) alist)     
+            (my-eval-list (cdar clauses) alist))
+        (t 
+            (my-eval-cond (cdr clauses) alist)))
+)
 
 ;; This one is done, it will become the new top-level for LISP.  After you
 ;; load this file, call (my-top) and then you can type in expressions and
