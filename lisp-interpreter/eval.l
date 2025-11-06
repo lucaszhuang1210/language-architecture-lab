@@ -1,3 +1,8 @@
+;; Initializes the global alist where global
+;; settings, like those defined via setq and defun, go.
+
+(defvar global-alist nil)
+
 ;; Note the new top-level function, my-top, is defined at the bottom of this file
 ;; defines a new REPL read-eval-print loop that you can use to test your interpreter.
 
@@ -167,12 +172,9 @@ nil
 ;; actuals pushing these new bindings onto the local alist and then
 ;; evaluate the body of the function in that new scoping context.
 
-;; You need to write this one.
-
 (defun my-eval-setq (var val)
-nil
-;; just push a new association of the var and its evaluated val onto the
-;; global alist
+    (setq global-alist (cons (cons var (my-eval val global-alist)) global-alist))
+    (my-eval var global-alist)
 )
 
 ;; You need to write this one.  You should know how cond works at this point.
@@ -193,10 +195,7 @@ nil
 nil
 )
 
-;; This one is done, it just initializes the global alist where global
-;; settings, like those defined via setq and defun, go.
 
-(defvar global-alist nil)
 
 ;; to push a new value, (setq global-alist (cons (cons 'newvar 'newval) global-alist))
 

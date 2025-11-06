@@ -24,26 +24,26 @@
 ;   (my-test '10)
 
   ;; primitive functions
-  (my-test '(eq t t))
-  (my-test '(eq nil nil))
-  (my-test '(eq t nil))
+;   (my-test '(eq t t))
+;   (my-test '(eq nil nil))
+;   (my-test '(eq t nil))
 
-  (my-test '(null nil))
-  (my-test '(null t))
+;   (my-test '(null nil))
+;   (my-test '(null t))
 
-  (my-test '(quote (a b c)))    ;; same as '(a b c)
-  (my-test '(eq 'a 'a))
-  (my-test '(eq '(a b) '(a b))) ;; should be nil
+;   (my-test '(quote (a b c)))    ;; same as '(a b c)
+;   (my-test '(eq 'a 'a))
+;   (my-test '(eq '(a b) '(a b))) ;; should be nil
 
-  (my-test '(car '(a b c)))
-  (my-test '(cdr '(a b c)))
-  (my-test '(cons 'foo '(a b c)))
+;   (my-test '(car '(a b c)))
+;   (my-test '(cdr '(a b c)))
+;   (my-test '(cons 'foo '(a b c)))
 
-  (my-test '(print '(a b c)))
+;   (my-test '(print '(a b c)))
 
-;   ;; giving symbols a value and evaluation of symbols
-;   (my-test '(setq a '(a b c)))
-;   (my-test 'a)
+  ;; giving symbols a value and evaluation of symbols
+  (my-test '(setq a '(a b c)))
+  (my-test 'a)
 
 ;   ;; cond - the conditional expression
 ;   (my-test '(cond (nil 2 3 4 5 1)
