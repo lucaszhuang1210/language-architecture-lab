@@ -11,21 +11,22 @@
   (terpri)
   (princ "Expression: ")
   (print exp)
+  (terpri)
   (princ "Result:    ")
   (print (my-eval exp global-alist))
   (terpri))
 
 (defun testall-hw5 ()
-  ;; atoms
-  (my-test 't)
-  (my-test 'nil)
-  (my-test '"Hello")
-  (my-test '10)
+;   ;; atoms
+;   (my-test 't)
+;   (my-test 'nil)
+;   (my-test '"Hello")
+;   (my-test '10)
 
-;   ;; primitive functions
-;   (my-test '(eq t t))
-;   (my-test '(eq nil nil))
-;   (my-test '(eq t nil))
+  ;; primitive functions
+  (my-test '(eq t t))
+  (my-test '(eq nil nil))
+  (my-test '(eq t nil))
 
 ;   (my-test '(null nil))
 ;   (my-test '(null t))

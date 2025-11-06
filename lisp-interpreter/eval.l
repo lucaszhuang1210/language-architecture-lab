@@ -57,8 +57,13 @@
 ;; You need to write this one.
 
 (defun my-eval-atom (e alist)
-;; how do you evaluate an atom???
-;; Remember there are special cases: T, NIL, MY-SYMBOL, 10, "Hello"
+    (cond
+        ((eq e 't)  t)
+        ((eq e nil) nil)
+        ((numberp e)    e)
+        ((stringp e)    e)
+        (t  (cdr (my-assoc e alist)))
+    )
 )
 
 ;; my-apply applies a function to arguments. The function may be the
