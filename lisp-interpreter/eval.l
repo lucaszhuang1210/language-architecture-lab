@@ -35,9 +35,6 @@
 ;; definitions made using defun or setq. Note the global-alist is passed in
 ;; to my-eval only in the call made by my-top defined below.
 
-
-;; You need to write this one.
-
 (defun my-assoc (v alist)
     (cond
         ((NULL alist)   nil)
@@ -46,15 +43,11 @@
     )
 )
 
-;; This one is done. Note the simple, clean code
-
 (defun my-eval (e alist)
     (cond ((atom e) (my-eval-atom e alist))
           (t (my-apply (car e) (cdr e) alist))
     )
 )
-
-;; You need to write this one.
 
 (defun my-eval-atom (e alist)
     (cond
@@ -69,11 +62,69 @@
 ;; my-apply applies a function to arguments. The function may be the
 ;; name of a function, or it may be a lambda.
 
-;; This one is done, but you must write the functions it calls
-
 (defun my-apply (fn args alist)
     (cond ((atom fn) (my-apply-atom fn args alist))
           ( t (my-apply-lambda fn args alist)))
+)
+
+;; You need to write this one.  Handle the primitives as special cases, then
+;; handle user defined functions (defined via defun) in the default case.
+;; Handle car, cdr, cons, eq, quote, cond, defun, setq, eval, print, atom, null,
+;; listp, apply, equal, +, -, mod, floor and user defined functions (defined via defun).
+;; This should allow you to interpret your functions from HW4.
+
+(defun my-apply-atom (fn args alist)
+    (cond 
+        ((eq fn 'eq)
+            (eq (my-eval (car args) alist) (my-eval (cadr args) alist))
+        )
+        ((eq fn 'car)
+            (car (my-eval (car args) alist))
+        )
+        ((eq fn 'cdr)
+            (cdr (my-eval (car args) alist))
+        )
+        ((eq fn 'cons)
+            (cons (my-eval (car args) alist) (my-eval (cadr args) alist))
+        )
+        ((eq fn 'quote)
+            (car args)
+        )
+        ((eq fn 'null)
+            (null (my-eval (car args) alist))
+        )
+        ((eq fn 'listp)
+            (listp (my-eval (car args) alist))
+        )
+        ((eq fn 'equal)
+            (equal (my-eval (car args) alist) (my-eval (cadr args) alist))
+        )
+        ((eq fn '+)
+            (+ (my-eval (car args) alist) (my-eval (cadr args) alist))
+        )
+        ((eq fn '-)
+            (- (my-eval (car args) alist) (my-eval (cadr args) alist))
+        )
+        ((eq fn '*)
+            (* (my-eval (car args) alist) (my-eval (cadr args) alist))
+        )
+        ((eq fn '/)
+            (/ (my-eval (car args) alist) (my-eval (cadr args) alist))
+        )
+        ((eq fn 'print)
+            (print (my-eval (car args) alist))
+        )
+        ((eq fn 'setq) 
+            (my-eval-setq (car args) (cadr args))
+        )
+        ((eq fn 'cond) (my-eval-cond args alist))
+        ((eq fn 'defun) (my-eval-defun args alist))
+        ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
+        ;; in this last case, function must be a variable bound to a function
+        ;; so get the lambda from the alist and then apply that to the arguments
+        (T (my-apply nil ;; this nil must be replaced by the correct expression
+                    args alist))
+    )
 )
 
 ;; You need to write this one.
@@ -108,39 +159,7 @@ nil
 nil
 )
 
-;; You need to write this one.  Handle the primitives as special cases, then
-;; handle user defined functions (defined via defun) in the default case.
-;; Handle car, cdr, cons, eq, quote, cond, defun, setq, eval, print, atom, null,
-;; listp, apply, equal, +, -, mod, floor and user defined functions (defined via defun).
-;; This should allow you to interpret your functions from HW4.
 
-(defun my-apply-atom (fn args alist)
-    (cond ((eq fn 'eq)
-           (eq (my-eval (car args) alist) (my-eval (cadr args) alist)))
-          ;; I wrote the first one, eq, for you, you write the rest
-          ((eq fn 'car)
-		    nil
-          )
-          ((eq fn 'cdr)
-		    nil
-          )
-          ((eq fn 'cons)
-		    nil
-          )
-          ((eq fn 'quote)
-		    nil
-          )
-          ((eq fn 'setq) (my-eval-setq ;; you'll have to figure out the arguments to pass
-                                nil nil))
-          ((eq fn 'cond) (my-eval-cond args alist))
-          ((eq fn 'defun) (my-eval-defun args alist))
-          ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
-		  ;; in this last case, function must be a variable bound to a function
-		  ;; so get the lambda from the alist and then apply that to the arguments
-          (T (my-apply nil ;; this nil must be replaced by the correct expression
-                       args alist))
-    )
-)
 
 
 ;; setq and defun will push a new association on the global-alist.
