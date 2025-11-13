@@ -126,16 +126,20 @@
         ((eq fn 'cond) 
             (my-eval-cond args alist)
         )
-        ((eq fn 'defun) (my-eval-defun args alist))
-        ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
+        ((eq fn 'defun) 
+            (my-eval-defun args alist)
+        )
+        ((eq fn 'eval) 
+            (my-eval (my-eval (car args) alist) alist)
+        )
         ;; in this last case, function must be a variable bound to a function
         ;; so get the lambda from the alist and then apply that to the arguments
-        (T (my-apply nil ;; this nil must be replaced by the correct expression
-                    args alist))
+        (T 
+            (my-apply (cdr (my-assoc fn global-alist)) args alist)
+        )
     )
 )
 
-;; You need to write this one.
 ;; Utility function for eval-cond and apply-lambda.  Evaluates each expression
 ;; in l and returns the value of the last expression
 
@@ -150,19 +154,14 @@
     )
 )
 
-;; You need to write this one.
-
-(defun my-apply-lambda (fn args alist)
 ;; bind the formals to the evaluated actuals then evaluate the body in that
 ;; new scoping context (i.e., that becomes the new alist for recursive
 ;; evaluation of the function body.  Return the value of the last 
 ;; expression in the body (using eval-list)).
-nil
+(defun my-apply-lambda (fn args alist)
+    (my-eval-list (cdr fn) (my-bind-formals (car fn) args alist))
 )
 
-;; You need to write this one.
-
-(defun my-bind-formals (formals actuals alist)
 ;; This takes a list of formals and unevaluated actuals.  It should evaluate
 ;; each actual and bind it to its corresponding formal placing them all on
 ;; the front of the alist.  It should return the alist with the new bindings
@@ -171,7 +170,16 @@ nil
 ;; e.g., (my-bind-formals '(a) '((add 1 b)) '((b . 10)))
 ;; will return ((a . 11) (b . 10))
 ;; Note there will be one actual parameter for each formal parameter.
-nil
+
+(defun my-bind-formals (formals actuals alist)
+    (cond
+        ((null formals) alist)
+        (t  (cons
+                (cons (car formals) (my-eval (car actuals) alist))
+                (my-bind-formals (cdr formals) (cdr actuals) alist)
+            )
+        )
+    )
 )
 
 
@@ -187,15 +195,15 @@ nil
     (my-eval var global-alist)
 )
 
-;; You need to write this one.
-;; Hint: just push the function body onto the global alist.  It is already an
+;; Push the function body onto the global alist.  It is already an
 ;; association, e.g., (equal (L1 L2) (cond (...))) and (assoc 'equal in
 ;; the global alist will return this.  You can then take the cdr and you
 ;; have a list containing the formal parameters and the expressions in
 ;; the function body. defun returns the name of the function.
 
 (defun my-eval-defun (body alist)
-nil
+    (setq global-alist (cons body global-alist))
+    (car body)
 )
 
 (defun my-eval-cond (clauses alist)
