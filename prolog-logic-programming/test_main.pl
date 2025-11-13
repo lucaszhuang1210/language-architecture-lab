@@ -38,3 +38,23 @@ test(member_not_found, [fail]) :-
     my_member(d, [a,b,c]).
 
 :- end_tests(my_member).
+
+:- begin_tests(my_append).
+
+test(append_basic) :-
+    my_append([a,b,c], [d,e,f], R),
+    R = [a,b,c,d,e,f].
+
+test(append_nested_lists) :-
+    my_append([[a],[b],[c]], [[d],[e],[f]], R),
+    R = [[a],[b],[c],[d],[e],[f]].
+
+test(append_empty_left) :-
+    my_append([], [d,e,f], R),
+    R = [d,e,f].
+
+test(append_empty_right) :-
+    my_append([a,b,c], [], R),
+    R = [a,b,c].
+
+:- end_tests(my_append).
