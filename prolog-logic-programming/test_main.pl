@@ -237,3 +237,31 @@ test(assoc_b, [fail]) :-
     my_assoc(b, [a,b,c,e,f,b], _).
 
 :- end_tests(my_assoc).
+
+:- begin_tests(my_replace).
+
+test(replace_dna) :-
+    my_replace(
+        [g,c,c,g,t,a,a,u],
+        [g,a,t,c,c,t,c,c,a,t,a,t,a,c,a,a,c,g,g,t],
+        R
+    ),
+    R = [c,u,a,g,g,a,g,g,u,a,u,a,u,g,u,u,g,c,c,a].
+
+test(replace_universities) :-
+    my_replace(
+        [ucb,ucla,ucsd,uci,basketball,tennis],
+        [ucsd,is,playing,basketball,against,ucb],
+        R
+    ),
+    R = [uci,is,playing,tennis,against,ucla].
+
+test(replace_animals) :-
+    my_replace(
+        [dog,cat,fleas,kittens,sunday,friday],
+        [my,dog,has,fleas,on,sunday],
+        R
+    ),
+    R = [my,cat,has,kittens,on,friday].
+
+:- end_tests(my_replace).

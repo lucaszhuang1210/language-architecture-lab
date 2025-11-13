@@ -82,3 +82,10 @@ my_sublist_match([H|T], [H|T2]) :- !,
 my_assoc(A, [A|[R|T]], R).
 my_assoc(A, [_|[_|T]], R) :-
     my_assoc(A, T, R).
+
+my_replace(_, [], []).
+my_replace(ALIST, [H|T], [R|RT]) :-
+    my_assoc(H, ALIST, R), !,
+    my_replace(ALIST, T, RT).
+my_replace(ALIST, [H|T], [H|RT]) :-
+    my_replace(ALIST, T, RT).
