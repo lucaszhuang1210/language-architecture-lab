@@ -48,3 +48,16 @@ Implements a simple Lisp interpreter to explore how programming languages evalua
 
 ### prolog-logic-programming
 Explores declarative programming using Prolog, where computation is expressed through facts and rules rather than step-by-step instructions. This project demonstrates how Prolog answers queries using unification, backtracking, and logical inference. By solving problems parallel to the Lisp section, it highlights the contrast between functional recursion and logic-based reasoning, showing how Prolog enables rule-driven computation and supports AI-style reasoning systems.
+
+#### How to Run Prolog
+To run a Prolog file using SWI-Prolog:
+
+**Command line:**
+```bash
+swipl -s test_main.pl -g run_tests -t halt
+```
+
+**Interactive mode:**
+```bash
+swipl -s main.pl
+```
