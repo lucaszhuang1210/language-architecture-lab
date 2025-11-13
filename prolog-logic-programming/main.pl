@@ -36,3 +36,12 @@ my_subst(X, Y, [X|T], [Y|R]) :-
 my_subst(X, Y, [H|T], [H|R]) :-
     X \= H,
     my_subst(X, Y, T, R).
+
+my_subset(_, [], []).
+my_subset(Type, [H|T], R) :-
+    keep(Type, H, R, R1),
+    my_subset(Type, T, R1).
+
+keep(atomic, H, [H|R], R) :- atomic(H), !.
+keep(compound, H, [H|R], R) :- compound(H), !.
+keep(_, _, R, R).

@@ -122,3 +122,15 @@ test(subst_c_to_d) :-
     R = [a,b,a,b,d,a,b].
 
 :- end_tests(my_subst).
+
+:- begin_tests(my_subset).
+
+test(subset_atomic) :-
+    my_subset(atomic, [a,[b],[c,d],e,f,g], R),
+    R = [a,e,f,g].
+
+test(subset_compound) :-
+    my_subset(compound, [a,[b],[c,d],e,f,g], R),
+    R = [[b],[c,d]].
+
+:- end_tests(my_subset).
