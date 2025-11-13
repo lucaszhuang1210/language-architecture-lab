@@ -45,3 +45,17 @@ my_subset(Type, [H|T], R) :-
 keep(atomic, H, [H|R], R) :- atomic(H), !.
 keep(compound, H, [H|R], R) :- compound(H), !.
 keep(_, _, R, R).
+
+my_add(N1, N2, R) :-
+    my_add2(N1, N2, 0, R).
+my_add2([], [], 0, []).
+my_add2([], [], 1, [1]).
+my_add2([], N2, C, R) :-
+    my_add2([0], N2, C, R).
+my_add2(N1, [], C, N1) :-
+    my_add2(N1, [0], C, N1).
+my_add2([H1|T1], [H2|T2], C, [D|R]) :-
+    S is H1 + H2 + C,
+    D is S mod 10,
+    C1 is S // 10,
+    my_add2(T1, T2, C1, R).

@@ -134,3 +134,31 @@ test(subset_compound) :-
     R = [[b],[c,d]].
 
 :- end_tests(my_subset).
+
+:- begin_tests(my_add).
+
+test(add_zero_zero) :-
+    my_add([0], [0], R),
+    R = [0].
+
+test(add_1_1) :-
+    my_add([1], [1], R),
+    R = [2].
+
+test(add_9_9) :-
+    my_add([9], [9], R),
+    R = [8,1].
+
+test(add_large_equal_length) :-
+    my_add(
+        [1,1,1,1,1,1,1,1,1,1],
+        [9,9,9,9,9,9,9,9,9,9],
+        R
+    ),
+    R = [0,1,1,1,1,1,1,1,1,1,1].
+
+test(add_one_to_big) :-
+    my_add([1], [9,9,9,9,9,9,9,9,9,9], R),
+    R = [0,0,0,0,0,0,0,0,0,0,1].
+
+:- end_tests(my_add).
