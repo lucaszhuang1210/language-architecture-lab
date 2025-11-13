@@ -98,3 +98,15 @@ test(nth_out_of_range) :-
     R = [].
 
 :- end_tests(my_nth).
+
+:- begin_tests(my_remove).
+
+test(remove_list_pattern) :-
+    my_remove([a,b], [a,b,[a,b],a,a,b,[a,b]], R),
+    R = [a,b,a,a,b].
+
+test(remove_atom) :-
+    my_remove(a, [a,b,[a,b],a,b], R),
+    R = [b,[a,b],b].
+
+:- end_tests(my_remove).

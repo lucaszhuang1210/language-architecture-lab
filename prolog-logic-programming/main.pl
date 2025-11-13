@@ -22,3 +22,10 @@ my_nth([_|T], N, R) :-
     N > 1,
     N1 is N - 1,
     my_nth(T, N1, R).
+
+my_remove(_, [], []).
+my_remove(X, [X|L], R) :-
+    my_remove(X, L, R).
+my_remove(X, [H|T], [H|R]) :-
+    X \= H,
+    my_remove(X, T, R).
