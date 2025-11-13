@@ -4,17 +4,6 @@
 (defvar global-alist nil)
 ;; to push a new value, (setq global-alist (cons (cons 'newvar 'newval) global-alist))  
 
-;; Note the new top-level function, my-top, is defined at the bottom of this file
-;; defines a new REPL read-eval-print loop that you can use to test your interpreter.
-
-;; To run this, load this file into the lisp interpreter, then call
-;; (my-top)
-;; then type in expressions to be evaluated.
-
-;; The homework assignment gives a list of good test cases which are
-;; listed in order that you should probably implement thim in to ensure you
-;; enough working to go on to the next test case.
-
 ;; We will use association lists, alists, for the stack of variables and
 ;; their values to implement dynamic scoping.  An alist is a list of this form:
 ;; ((var1 . val1) (var2 . val2) ... (varN . valN))
@@ -65,19 +54,10 @@
     )
 )
 
-;; my-apply applies a function to arguments. The function may be the
-;; name of a function, or it may be a lambda.
-
 (defun my-apply (fn args alist)
     (cond ((atom fn) (my-apply-atom fn args alist))
           ( t (my-apply-lambda fn args alist)))
 )
-
-;; You need to write this one.  Handle the primitives as special cases, then
-;; handle user defined functions (defined via defun) in the default case.
-;; Handle car, cdr, cons, eq, quote, cond, defun, setq, eval, print, atom, null,
-;; listp, apply, equal, +, -, mod, floor and user defined functions (defined via defun).
-;; This should allow you to interpret your functions from HW4.
 
 (defun my-apply-atom (fn args alist)
     (cond 
@@ -162,15 +142,6 @@
     (my-eval-list (cdr fn) (my-bind-formals (car fn) args alist))
 )
 
-;; This takes a list of formals and unevaluated actuals.  It should evaluate
-;; each actual and bind it to its corresponding formal placing them all on
-;; the front of the alist.  It should return the alist with the new bindings
-;; on the front.  This will be used to evaluate calls to functions defined
-;; via defun.
-;; e.g., (my-bind-formals '(a) '((add 1 b)) '((b . 10)))
-;; will return ((a . 11) (b . 10))
-;; Note there will be one actual parameter for each formal parameter.
-
 (defun my-bind-formals (formals actuals alist)
     (cond
         ((null formals) alist)
@@ -182,24 +153,10 @@
     )
 )
 
-
-
-
-;; setq and defun will push a new association on the global-alist.
-;; whenever we apply a function, we will bind the formals to the evaluated
-;; actuals pushing these new bindings onto the local alist and then
-;; evaluate the body of the function in that new scoping context.
-
 (defun my-eval-setq (var val)
     (setq global-alist (cons (cons var (my-eval val global-alist)) global-alist))
     (my-eval var global-alist)
 )
-
-;; Push the function body onto the global alist.  It is already an
-;; association, e.g., (equal (L1 L2) (cond (...))) and (assoc 'equal in
-;; the global alist will return this.  You can then take the cdr and you
-;; have a list containing the formal parameters and the expressions in
-;; the function body. defun returns the name of the function.
 
 (defun my-eval-defun (body alist)
     (setq global-alist (cons body global-alist))
@@ -214,12 +171,6 @@
         (t 
             (my-eval-cond (cdr clauses) alist)))
 )
-
-;; This one is done, it will become the new top-level for LISP.  After you
-;; load this file, call (my-top) and then you can type in expressions and
-;; define and call functions to test your my-eval. Note it uses the prog which
-;; allows defining local variables, labels and goto looping similar to features
-;; found in imperative languages.
 
 (defun my-top ()
     (prog ()
