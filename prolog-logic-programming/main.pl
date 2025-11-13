@@ -78,3 +78,7 @@ my_sublist([H|T], [_|T2]) :-
 my_sublist_match([], _).
 my_sublist_match([H|T], [H|T2]) :- !,
     my_sublist_match(T, T2).
+
+my_assoc(A, [A|[R|T]], R).
+my_assoc(A, [_|[_|T]], R) :-
+    my_assoc(A, T, R).

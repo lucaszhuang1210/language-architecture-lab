@@ -215,3 +215,25 @@ test(sublist_with_variable) :-
     X = 5.
 
 :- end_tests(my_sublist).
+
+:- begin_tests(my_assoc).
+
+test(assoc_empty, [fail]) :-
+    my_assoc(a, [], _).
+
+test(assoc_a) :-
+    my_assoc(a, [a,b,c,e,f,b], R),
+    R = b.
+
+test(assoc_c) :-
+    my_assoc(c, [a,b,c,e,f,b], R),
+    R = e.
+
+test(assoc_f) :-
+    my_assoc(f, [a,b,c,e,f,b], R),
+    R = b.
+
+test(assoc_b, [fail]) :-
+    my_assoc(b, [a,b,c,e,f,b], _).
+
+:- end_tests(my_assoc).
