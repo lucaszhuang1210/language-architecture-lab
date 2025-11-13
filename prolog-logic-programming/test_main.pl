@@ -3,18 +3,19 @@
 :- consult('main.pl').
 
 test(empty_list) :-
-    my_length([], 0).
+    my_length([], R),
+    R = 0.
 
-test(one_element) :-
-    my_length([a], 1).
+test(nested_list_level1) :-
+    my_length([b, [a,b,c]], R),
+    R = 2.
 
-test(multiple_elements) :-
-    my_length([a,b,c,d], 4).
+test(nested_list_level2) :-
+    my_length([a, [[[b]]], c], R),
+    R = 3.
 
-test(with_numbers) :-
-    my_length([1,2,3], 3).
-
-test(wrong_length, [fail]) :-
-    my_length([x,y], 3).
+test(simple_list) :-
+    my_length([a,b,c], R),
+    R = 3.
 
 :- end_tests(my_length).
