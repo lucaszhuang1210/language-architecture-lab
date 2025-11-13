@@ -186,3 +186,32 @@ test(merge_case5) :-
     R = [1,2,3,4,5,6,7,8,9,10].
 
 :- end_tests(my_merge).
+
+:- begin_tests(my_sublist).
+
+test(sublist_true_1) :-
+    my_sublist([1,2,3], [1,2,3,4,5]).
+
+test(sublist_true_2) :-
+    my_sublist([3,4,5], [1,2,3,4,5]).
+
+test(sublist_true_3) :-
+    my_sublist([c,d], [a,b,c,d,e]).
+
+test(sublist_false_1, [fail]) :-
+    my_sublist([3,4], [1,2,3,5,6]).
+
+test(sublist_false_2, [fail]) :-
+    my_sublist([1,2,3,4,5], [3,4,5]).
+
+test(sublist_false_3, [fail]) :-
+    my_sublist([2,4], [1,2,3,4,5]).
+
+test(sublist_false_4, [fail]) :-
+    my_sublist([1,3,5], [1,2,3,4,5]).
+
+test(sublist_with_variable) :-
+    my_sublist([3,4,5], [1,2,3,4,X]),
+    X = 5.
+
+:- end_tests(my_sublist).

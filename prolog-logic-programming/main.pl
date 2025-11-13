@@ -68,3 +68,13 @@ my_merge([H1|T1], [H2|T2], [H1|R]) :-
 my_merge([H1|T1], [H2|T2], [H2|R]) :-
     H1 > H2,
     my_merge([H1|T1], T2, R).
+
+my_sublist([], _).
+my_sublist([H|T], [H|T2]) :-
+    my_sublist_match(T, T2).
+my_sublist([H|T], [_|T2]) :-
+    my_sublist([H|T], T2).
+
+my_sublist_match([], _).
+my_sublist_match([H|T], [H|T2]) :- !,
+    my_sublist_match(T, T2).
