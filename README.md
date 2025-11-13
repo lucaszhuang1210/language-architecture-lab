@@ -43,3 +43,8 @@ You can then call any function defined in your file directly within the Lisp REP
 
 ### lisp-interpreter
 Implements a simple Lisp interpreter to explore how programming languages evaluate code. This project highlights how evaluation follows clear, algorithmic rules rather than arbitrary behavior. By using functional decomposition and recursion, it strengthens understanding of interpreter structure, predictable evaluation, and recursive program execution.
+
+---
+
+### prolog-logic-programming
+Explores declarative programming using Prolog, where computation is expressed through facts and rules rather than step-by-step instructions. This project demonstrates how Prolog answers queries using unification, backtracking, and logical inference. By solving problems parallel to the Lisp section, it highlights the contrast between functional recursion and logic-based reasoning, showing how Prolog enables rule-driven computation and supports AI-style reasoning systems.
