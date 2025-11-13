@@ -58,3 +58,23 @@ test(append_empty_right) :-
     R = [a,b,c].
 
 :- end_tests(my_append).
+
+:- begin_tests(my_reverse).
+
+test(reverse_empty) :-
+    my_reverse([], R),
+    R = [].
+
+test(reverse_two_elements) :-
+    my_reverse([a,b], R),
+    R = [b,a].
+
+test(reverse_numbers) :-
+    my_reverse([1,2,3,4,5], R),
+    R = [5,4,3,2,1].
+
+test(reverse_nested) :-
+    my_reverse([[1,2,3],4,[[5,6]]], R),
+    R = [[[5,6]],4,[1,2,3]].
+
+:- end_tests(my_reverse).
