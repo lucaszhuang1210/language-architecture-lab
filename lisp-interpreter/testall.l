@@ -16,7 +16,7 @@
   (print (my-eval exp global-alist))
   (terpri))
 
-(defun testall-hw5 ()
+(defun testall ()
   ;; atoms
   (my-test 't)
   (my-test 'nil)
@@ -68,4 +68,4 @@
   (my-test '(app (app a a) (app a a)))
 )
 
-(testall-hw5)
+(testall)
