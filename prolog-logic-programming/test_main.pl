@@ -162,3 +162,27 @@ test(add_one_to_big) :-
     R = [0,0,0,0,0,0,0,0,0,0,1].
 
 :- end_tests(my_add).
+
+:- begin_tests(my_merge).
+
+test(merge_case1) :-
+    my_merge([1,3,5,7,9], [2,4,6,8,10], R),
+    R = [1,2,3,4,5,6,7,8,9,10].
+
+test(merge_case2) :-
+    my_merge([1,2,3,7,8,9], [4,5,6,10], R),
+    R = [1,2,3,4,5,6,7,8,9,10].
+
+test(merge_case3) :-
+    my_merge([1,2,3], [4,5,6,7,8,9,10], R),
+    R = [1,2,3,4,5,6,7,8,9,10].
+
+test(merge_case4) :-
+    my_merge([1,3,5,6,7,8,9,10], [2,4], R),
+    R = [1,2,3,4,5,6,7,8,9,10].
+
+test(merge_case5) :-
+    my_merge([], [1,2,3,4,5,6,7,8,9,10], R),
+    R = [1,2,3,4,5,6,7,8,9,10].
+
+:- end_tests(my_merge).

@@ -59,3 +59,12 @@ my_add2([H1|T1], [H2|T2], C, [D|R]) :-
     D is S mod 10,
     C1 is S // 10,
     my_add2(T1, T2, C1, R).
+
+my_merge([], L2, L2).
+my_merge(L1, [], L1).
+my_merge([H1|T1], [H2|T2], [H1|R]) :-
+    H1 =< H2,
+    my_merge(T1, [H2|T2], R).
+my_merge([H1|T1], [H2|T2], [H2|R]) :-
+    H1 > H2,
+    my_merge([H1|T1], T2, R).
