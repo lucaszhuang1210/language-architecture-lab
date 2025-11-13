@@ -43,6 +43,7 @@ my_subset(Type, [H|T], R) :-
     my_subset(Type, T, R1).
 
 keep(atomic, H, [H|R], R) :- atomic(H), !.
+keep(atom, H, [H|R], R) :- atom(H), !.
 keep(compound, H, [H|R], R) :- compound(H), !.
 keep(_, _, R, R).
 

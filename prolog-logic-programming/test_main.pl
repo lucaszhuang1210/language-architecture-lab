@@ -133,6 +133,14 @@ test(subset_compound) :-
     my_subset(compound, [a,[b],[c,d],e,f,g], R),
     R = [[b],[c,d]].
 
+test(subset_atom_case1) :-
+    my_subset(atom, [a, [b], c], Y),
+    Y = [a,c].
+
+test(subset_atom_case2) :-
+    my_subset(atom, [[a], [b], c, d, [e], f], Y),
+    Y = [c,d,f].
+
 :- end_tests(my_subset).
 
 :- begin_tests(my_add).
