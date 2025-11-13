@@ -110,3 +110,15 @@ test(remove_atom) :-
     R = [b,[a,b],b].
 
 :- end_tests(my_remove).
+
+:- begin_tests(my_subst).
+
+test(subst_b_to_a) :-
+    my_subst(b, a, [a,b,a,b,c,a,b], R),
+    R = [a,a,a,a,c,a,a].
+
+test(subst_c_to_d) :-
+    my_subst(c, d, [a,b,a,b,c,a,b], R),
+    R = [a,b,a,b,d,a,b].
+
+:- end_tests(my_subst).

@@ -29,3 +29,10 @@ my_remove(X, [X|L], R) :-
 my_remove(X, [H|T], [H|R]) :-
     X \= H,
     my_remove(X, T, R).
+
+my_subst(_, _, [], []).
+my_subst(X, Y, [X|T], [Y|R]) :-
+    my_subst(X, Y, T, R).
+my_subst(X, Y, [H|T], [H|R]) :-
+    X \= H,
+    my_subst(X, Y, T, R).
