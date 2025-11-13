@@ -15,3 +15,10 @@ my_reverse([], []).
 my_reverse([H|T], R) :-
     my_reverse(T, R1),
     my_append(R1, [H], R).
+
+my_nth([], _, []) :- !.
+my_nth(L, 1, L) :- !.
+my_nth([_|T], N, R) :-
+    N > 1,
+    N1 is N - 1,
+    my_nth(T, N1, R).

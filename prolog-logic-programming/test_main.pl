@@ -78,3 +78,23 @@ test(reverse_nested) :-
     R = [[[5,6]],4,[1,2,3]].
 
 :- end_tests(my_reverse).
+
+:- begin_tests(my_nth).
+
+test(nth_first) :-
+    my_nth([a,b,c,d,e], 1, R),
+    R = [a,b,c,d,e].
+
+test(nth_third) :-
+    my_nth([a,b,c,d,e], 3, R),
+    R = [c,d,e].
+
+test(nth_fifth) :-
+    my_nth([a,b,c,d,e], 5, R),
+    R = [e].
+
+test(nth_out_of_range) :-
+    my_nth([a,b,c,d,e], 30, R),
+    R = [].
+
+:- end_tests(my_nth).
