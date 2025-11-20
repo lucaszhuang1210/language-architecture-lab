@@ -90,3 +90,26 @@ my_replace(ALIST, [H|T], [R|RT]) :-
     my_replace(ALIST, T, RT).
 my_replace(ALIST, [H|T], [H|RT]) :-
     my_replace(ALIST, T, RT).
+
+eval(C, C) :- 
+    integer(C).
+eval(X+Y, R) :-
+    eval(X, XR), 
+    eval(Y, YR), 
+    R is XR + YR.
+eval(X-Y, R) :-
+    eval(X, XR), 
+    eval(Y, YR), 
+    R is XR - YR.
+eval(X*Y, R) :-
+    eval(X, XR), 
+    eval(Y, YR), 
+    R is XR * YR.
+eval(X/Y, R) :-
+    eval(X, XR), 
+    eval(Y, YR), 
+    R is XR / YR.
+eval(X^Y, R) :-
+    eval(X, XR), 
+    eval(Y, YR), 
+    R is XR ^ YR.

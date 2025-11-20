@@ -273,3 +273,19 @@ test(replace_animals) :-
     R = [my,cat,has,kittens,on,friday].
 
 :- end_tests(my_replace).
+
+:- begin_tests(eval).
+
+test(eval_case1) :-
+    eval(5-6*18/3+2, Y),
+    Y = -29.
+
+test(eval_case2) :-
+    eval(10*20-9/3+20, Y),
+    Y = 217.
+
+test(eval_case3) :-
+    eval(10^3*9-1, Y),
+    Y = 8999.
+
+:- end_tests(eval).
