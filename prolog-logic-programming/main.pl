@@ -204,3 +204,57 @@ deriv(C^N, R) :-
     atomic(C), C \= x,
     number(N),
     simplify(0, R), !.
+
+
+collect_people(Acc, People) :-
+    male(X),
+    \+ my_member(X, Acc),
+    collect_people([X|Acc], People).
+collect_people(Acc, People) :-
+    female(X),
+    \+ my_member(X, Acc),
+    collect_people([X|Acc], People).
+collect_people(People, People).
+
+all_people(People) :-
+    collect_people([], P0),
+    my_reverse(P0, People).   % keep stable order
+
+share_language(A, B) :-
+    speaks(A, L),
+    speaks(B, L),
+    !.
+
+no_two_females(A, B) :-
+    \+ (female(A), female(B)).
+
+adjacent_ok(A, B) :-
+    share_language(A, B),
+    no_two_females(A, B).
+
+valid_round_seating([A,B|Rest]) :-
+    adjacent_ok(A, B),
+    valid_round_seating([B|Rest]).
+valid_round_seating([_]).   % end
+
+wrap_ok([First|Rest]) :-
+    last_element(Rest, Last),
+    adjacent_ok(Last, First).
+
+last_element([X], X).
+last_element([_|T], X) :- last_element(T, X).
+
+select(X, [X|T], T).
+select(X, [H|T], [H|R]) :- select(X, T, R).
+
+perm([], []).
+perm(L, [X|R]) :-
+    select(X, L, T),
+    perm(T, R).
+
+party_seating(L) :-
+    all_people(People),
+    perm(People, L),
+    valid_round_seating(L),
+    wrap_ok(L),
+    !.  
