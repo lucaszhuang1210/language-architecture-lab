@@ -91,6 +91,10 @@ my_replace(ALIST, [H|T], [R|RT]) :-
 my_replace(ALIST, [H|T], [H|RT]) :-
     my_replace(ALIST, T, RT).
 
+
+/* =====================================================
+   Higher Level Functions: Symbolic Differentiation
+   ===================================================== */
 eval(C, C) :- 
     integer(C).
 eval(X+Y, R) :-
@@ -178,33 +182,47 @@ simplify_pow(X^Y, R) :-
     R is X ^ Y, !.
 simplify_pow(X^Y, X^Y).
 
-deriv(x, 1) :- !.
-deriv(C, 0) :- atomic(C), !.
+deriv(X, X) :- 
+    number(X).
+deriv(X, 1) :- 
+    atom(X).
 deriv(X+Y, R) :-
-    deriv(X, DX),
-    deriv(Y, DY),
-    simplify(DX + DY, R).
+    deriv(X, XR),
+    deriv(Y, YR),
+    simplify(XR + YR, R).
 deriv(X-Y, R) :-
-    deriv(X, DX),
-    deriv(Y, DY),
-    simplify(DX - DY, R).
+    deriv(X, XR),
+    deriv(Y, YR),
+    simplify(XR - YR, R).
 deriv(X*Y, R) :-
-    deriv(X, DX),
-    deriv(Y, DY),
-    simplify(DX*Y + X*DY, R).
+    deriv(X, XR),
+    deriv(Y, YR),
+    simplify(XR * YR, R).
+deriv(X*Y, R) :-
+    deriv(X, XR),
+    deriv(Y, YR),
+    simplify(XR * YR, R).
+deriv(X/Y^Z, R) :-
+    deriv(X, XR),
+    Z1 is Z + 1,
+    simplify(X*Z/Y^Z1, R).
 deriv(X/Y, R) :-
-    deriv(X, DX),
-    deriv(Y, DY),
-    simplify((DX*Y - X*DY) / (Y*Y), R).
-deriv(x^N, R) :-
-    number(N), N =\= 0,
-    N1 is N - 1,
-    simplify(N * x^N1, R), !.
-deriv(C^N, R) :-
-    atomic(C), C \= x,
-    number(N),
-    simplify(0, R), !.
+    deriv(X, XR),
+    deriv(Y, YR),
+    simplify(XR / YR, R).
+deriv(X^Y, R) :-
+    atom(X),
+    number(Y), Y \= 0,
+    Y1 is Y - 1,
+    simplify(Y * X ^ Y1, R).
 
+deriv2(X, X^2) :- 
+    atom(X).
+deriv2(X^Y, X) :- 
+    atom(X),
+    number(Y), Y \= 0,
+    Y1 is Y + 1,
+    simplify(Y / X ^ Y1, R).
 
 collect_people(Acc, People) :-
     male(X),
@@ -258,3 +276,34 @@ party_seating(L) :-
     valid_round_seating(L),
     wrap_ok(L),
     !.  
+
+% genders
+male(klefstad).
+male(bill).
+male(mark).
+male(isaac).
+male(fred).
+
+female(emily).
+female(heidi).
+female(beth).
+female(susan).
+female(jane).
+
+% languages
+speaks(klefstad, english).
+speaks(bill, english).
+speaks(emily, english).
+speaks(heidi, english).
+speaks(isaac, english).
+
+speaks(beth, french).
+speaks(mark, french).
+speaks(susan, french).
+speaks(isaac, french).
+
+speaks(klefstad, spanish).
+speaks(bill, spanish).
+speaks(susan, spanish).
+speaks(fred, spanish).
+speaks(jane, spanish).
