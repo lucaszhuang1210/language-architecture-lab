@@ -176,7 +176,41 @@ simplify_pow(X^Y, R) :-
     R is X ^ Y, !.
 simplify_pow(X^Y, X^Y).
 
+deriv(X, X) :- 
+    number(X).
+deriv(X, 1) :- 
+    atom(X).
+deriv(X+Y, R) :-
+    deriv(X, XR),
+    deriv(Y, YR),
+    simplify(XR + YR, R).
+deriv(X-Y, R) :-
+    deriv(X, XR),
+    deriv(Y, YR),
+    simplify(XR - YR, R).
+deriv(X*Y, R) :-
+    deriv(X, XR),
+    deriv(Y, YR),
+    simplify(XR * YR, R).
+deriv(X/Y, R) :-
+    deriv(X, XR),
+    deriv2(Y, YR),
+    simplify(XR / YR, R).
+deriv(X/Y, R) :-
+    deriv(X, XR),
+    deriv2(Y, YR),
+    simplify(XR / YR, R).
+deriv(X^Y, R) :-
+    atom(X),
+    number(Y), Y \= 0,
+    Y1 is Y - 1,
+    simplify(Y * X ^ Y1, R).
 
-
-
+deriv2(X, X^2) :- 
+    atom(X).
+deriv2(X^Y, X) :- 
+    atom(X),
+    number(Y), Y \= 0,
+    Y1 is Y + 1,
+    simplify(Y / X ^ Y1, R).
 
