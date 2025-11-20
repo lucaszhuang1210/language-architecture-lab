@@ -113,3 +113,63 @@ eval(X^Y, R) :-
     eval(X, XR), 
     eval(Y, YR), 
     R is XR ^ YR.
+
+simplify(X, X) :- 
+    atomic(X).
+simplify(X+Y, R) :-
+    number(X), number(Y),
+    R is X + Y, !.
+simplify(X-Y, R) :-
+    number(X), number(Y),
+    R is X - Y, !.
+simplify(X*Y, R) :-
+    number(X), number(Y),
+    R is X * Y, !.
+simplify(X/Y, R) :-
+    number(X), number(Y),
+    R is X / Y, !.
+simplify(X^Y, R) :-
+    number(X), number(Y),
+    R is X ^ Y, !.
+
+simplify(X+0, X).
+simplify(X-0, X).
+simplify(0+X, X).
+simplify(0-X, -X).
+simplify(X-X, 0).
+
+simplify(X*0, 0).
+simplify(0*X, 0).
+simplify(X*1, X).
+simplify(1*X, X).
+simplify(0/X, 0).
+simplify(X/1, X).
+simplify(X/X, 1).
+
+simplify(X^0, 1).
+simplify(X^1, X).
+
+simplify(X+Y, XR+YR) :-
+    simplify(X, XR),
+    simplify(Y, YR).
+simplify(X-Y, XR-YR) :-
+    simplify(X, XR), 
+    simplify(Y, YR).
+simplify(X*Y, XR*YR) :-
+    simplify(X, XR), 
+    simplify(Y, YR).
+simplify(X/Y, XR/YR) :-
+    simplify(X, XR), 
+    simplify(Y, YR).
+simplify(X^Y, XR^YR) :-
+    simplify(X, XR), 
+    simplify(Y, YR).
+
+
+
+
+
+
+
+
+

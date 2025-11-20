@@ -289,3 +289,18 @@ test(eval_case3) :-
     Y = 8999.
 
 :- end_tests(eval).
+
+:- begin_tests(simplify).
+test(simplify_add_one) :-
+    simplify(x+1, Y),
+    Y = x+1.
+
+test(simplify_cancel_unit) :-
+    simplify(5-x*(3/3)+2, Y),
+    Y = 5-x+2.
+
+test(simplify_remove_zero) :-
+    simplify(1*x-0/3+2, Y),
+    Y = x+2.
+
+:- end_tests(simplify).
