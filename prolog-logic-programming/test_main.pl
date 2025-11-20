@@ -319,12 +319,12 @@ test(deriv_polynomial_plus) :-
     deriv(x^4+2*x^3-x^2+5*x-1/x, Y),
     Y = 4*x^3+6*x^2-2*x+5+1/x^2.
 
-% test(deriv_polynomial_next) :-
-%     deriv(4*x^3+6*x^2-2*x+5+1/x^2, Y),
-%     Y = 12*x^2+12*x-2-2/x^3.
+test(deriv_polynomial_next) :-
+    deriv(4*x^3+6*x^2-2*x+5+1/x^2, Y),
+    Y = 12*x^2+12*x-2-2/x^3.
 
-% test(deriv_polynomial_final) :-
-%     deriv(12*x^2+12*x-2-2/x^3, Y),
-%     Y = 24*x+12+6/x^4.
+test(deriv_polynomial_final) :-
+    deriv(12*x^2+12*x-2-2/x^3, Y),
+    Y = 24*x+12+6/x^4.
 
 :- end_tests(deriv).

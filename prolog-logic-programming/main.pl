@@ -164,6 +164,8 @@ simplify_mul(X*Y, X*Y).
 simplify_div(0/_, 0).
 simplify_div(X/1, X).
 simplify_div(X/X, 1).
+simplify_div((A*B)/B, A).
+simplify_div((A*B)/A, B).
 simplify_div(X/Y, R) :-
     number(X), number(Y),
     R is X / Y, !.
@@ -176,41 +178,29 @@ simplify_pow(X^Y, R) :-
     R is X ^ Y, !.
 simplify_pow(X^Y, X^Y).
 
-deriv(X, X) :- 
-    number(X).
-deriv(X, 1) :- 
-    atom(X).
+deriv(x, 1) :- !.
+deriv(C, 0) :- atomic(C), !.
 deriv(X+Y, R) :-
-    deriv(X, XR),
-    deriv(Y, YR),
-    simplify(XR + YR, R).
+    deriv(X, DX),
+    deriv(Y, DY),
+    simplify(DX + DY, R).
 deriv(X-Y, R) :-
-    deriv(X, XR),
-    deriv(Y, YR),
-    simplify(XR - YR, R).
+    deriv(X, DX),
+    deriv(Y, DY),
+    simplify(DX - DY, R).
 deriv(X*Y, R) :-
-    deriv(X, XR),
-    deriv(Y, YR),
-    simplify(XR * YR, R).
+    deriv(X, DX),
+    deriv(Y, DY),
+    simplify(DX*Y + X*DY, R).
 deriv(X/Y, R) :-
-    deriv(X, XR),
-    deriv2(Y, YR),
-    simplify(XR / YR, R).
-deriv(X/Y, R) :-
-    deriv(X, XR),
-    deriv2(Y, YR),
-    simplify(XR / YR, R).
-deriv(X^Y, R) :-
-    atom(X),
-    number(Y), Y \= 0,
-    Y1 is Y - 1,
-    simplify(Y * X ^ Y1, R).
-
-deriv2(X, X^2) :- 
-    atom(X).
-deriv2(X^Y, X) :- 
-    atom(X),
-    number(Y), Y \= 0,
-    Y1 is Y + 1,
-    simplify(Y / X ^ Y1, R).
-
+    deriv(X, DX),
+    deriv(Y, DY),
+    simplify((DX*Y - X*DY) / (Y*Y), R).
+deriv(x^N, R) :-
+    number(N), N =\= 0,
+    N1 is N - 1,
+    simplify(N * x^N1, R), !.
+deriv(C^N, R) :-
+    atomic(C), C \= x,
+    number(N),
+    simplify(0, R), !.
