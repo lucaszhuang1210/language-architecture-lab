@@ -117,57 +117,64 @@ eval(X^Y, R) :-
 simplify(X, X) :- 
     atomic(X).
 simplify(X+Y, R) :-
+    simplify(X, XR), 
+    simplify(Y, YR), 
+    simplify_add(XR+YR, R).
+simplify(X-Y, R) :-
+    simplify(X, XR), 
+    simplify(Y, YR), 
+    simplify_sub(XR-YR, R).
+simplify(X*Y, R) :-
+    simplify(X, XR), 
+    simplify(Y, YR), 
+    simplify_mul(XR*YR, R).
+simplify(X/Y, R) :-
+    simplify(X, XR), 
+    simplify(Y, YR), 
+    simplify_div(XR/YR, R).
+simplify(X^Y, R) :-
+    simplify(X, XR), 
+    simplify(Y, YR), 
+    simplify_pow(XR^YR, R).
+
+simplify_add(X+0, X).
+simplify_add(0+X, X).
+simplify_add(X+Y, R) :-
     number(X), number(Y),
     R is X + Y, !.
-simplify(X-Y, R) :-
+simplify_add(X+Y, X+Y).
+
+simplify_sub(X-0, X).
+simplify_sub(0-X, -X).
+simplify_sub(X-X, 0).
+simplify_sub(X-Y, R) :-
     number(X), number(Y),
     R is X - Y, !.
-simplify(X*Y, R) :-
+simplify_sub(X-Y, X-Y).
+
+simplify_mul(_*0, 0).
+simplify_mul(0*_, 0).
+simplify_mul(X*1, X).
+simplify_mul(1*X, X).
+simplify_mul(X*Y, R) :-
     number(X), number(Y),
     R is X * Y, !.
-simplify(X/Y, R) :-
+simplify_mul(X*Y, X*Y).
+
+simplify_div(0/_, 0).
+simplify_div(X/1, X).
+simplify_div(X/X, 1).
+simplify_div(X/Y, R) :-
     number(X), number(Y),
     R is X / Y, !.
-simplify(X^Y, R) :-
+simplify_div(X/Y, X/Y).
+
+simplify_pow(_^0, 1).
+simplify_pow(X^1, X).
+simplify_pow(X^Y, R) :-
     number(X), number(Y),
     R is X ^ Y, !.
-
-simplify(X+0, X).
-simplify(X-0, X).
-simplify(0+X, X).
-simplify(0-X, -X).
-simplify(X-X, 0).
-
-simplify(X*0, 0).
-simplify(0*X, 0).
-simplify(X*1, X).
-simplify(1*X, X).
-simplify(0/X, 0).
-simplify(X/1, X).
-simplify(X/X, 1).
-
-simplify(X^0, 1).
-simplify(X^1, X).
-
-simplify(X+Y, XR+YR) :-
-    simplify(X, XR),
-    simplify(Y, YR).
-simplify(X-Y, XR-YR) :-
-    simplify(X, XR), 
-    simplify(Y, YR).
-simplify(X*Y, XR*YR) :-
-    simplify(X, XR), 
-    simplify(Y, YR).
-simplify(X/Y, XR/YR) :-
-    simplify(X, XR), 
-    simplify(Y, YR).
-simplify(X^Y, XR^YR) :-
-    simplify(X, XR), 
-    simplify(Y, YR).
-
-
-
-
+simplify_pow(X^Y, X^Y).
 
 
 
