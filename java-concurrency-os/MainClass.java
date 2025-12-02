@@ -1,3 +1,7 @@
+import java.io.*;
+import java.util.Hashtable;
+
+
 class Disk {
     static final int NUM_SECTORS = 2048;
     static final int DISK_DELAY = 800;
@@ -33,15 +37,21 @@ class Disk {
 }
 
 
-class Printer
-    // extends Thread
-{
-    Printer(int id)
-    {
+class Printer {
+    static final int PRINT_DELAY = 2750;
+
+    Printer(int id) {
+
     }
 
-    void print(StringBuffer data)  // call sleep
-    {
+    void print(StringBuffer data) {
+        try {
+            Thread.sleep(PRINT_DELAY);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(data);
     }
 }
 
@@ -66,21 +76,19 @@ class FileInfo
     int fileLength;
 }
 
-class DirectoryManager
-{
-    // private Hashtable<String, FileInfo> T = new Hashtable<String, FileInfo>();
 
-    DirectoryManager()
-    {
-    }
+class DirectoryManager {
+    private Hashtable<String, FileInfo> T = new Hashtable<String, FileInfo>();
 
-    void enter(StringBuffer fileName, FileInfo file)
-    {
+    DirectoryManager() {}
+
+    void enter(StringBuffer fileName, FileInfo file) {
+        T.put(fileName.toString(), file);
     }
 
     FileInfo lookup(StringBuffer fileName)
     {
-        return null;
+        return T.get(fileName.toString());
     }
 }
 
