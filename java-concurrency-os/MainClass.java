@@ -1,18 +1,37 @@
-class Disk
-    // extends Thread
-{
+class Disk {
     static final int NUM_SECTORS = 2048;
+    static final int DISK_DELAY = 800;
+
     StringBuffer sectors[] = new StringBuffer[NUM_SECTORS];
-    Disk()
-    {
+
+    Disk() {
+        for (int i=0; i<NUM_SECTORS; ++i)
+            sectors[i] = new StringBuffer();
     }
-    void write(int sector, StringBuffer data)  // call sleep
-    {
+
+    void write(int sector, StringBuffer data) {
+        try {
+            Thread.sleep(DISK_DELAY);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        sectors[sector].setLength(0);
+        sectors[sector].append(data);
     }
-    void read(int sector, StringBuffer data)   // call sleep
-    {
+
+    void read(int sector, StringBuffer data) {
+        try {
+            Thread.sleep(DISK_DELAY);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        data.setLength(0);
+        data.append(sectors[sector]);
     }
 }
+
 
 class Printer
     // extends Thread
