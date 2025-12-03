@@ -69,46 +69,34 @@ class Printer {
 }
 
 class PrintJobThread extends Thread {
-    StringBuffer line = new StringBuffer();
-    StringBuffer fileName = new StringBuffer();
+    String fileName;
+    Disk disk;
+    DirectoryManager directoryManager;
+    Printer printer;
 
-    // references to global managers
-    static DirectoryManager dirManager;
-    static DiskManager diskManager;
-    static PrinterManager printerManager;
+    StringBuffer line;
 
-    PrintJobThread(String fileToPrint)
-    {
-        fileName.append(fileToPrint);
+    PrintJobThread(String fileToPrint) {
+        this.fileName = fileToPrint;
+        this.line = new StringBuffer();
+        this.disk = new Disk();
+        this.directoryManager = new DirectoryManager();
+        this.printer = new Printer();
     }
 
     public void run() {
-        FileInfo info = dirManager.lookup(fileName);
-        if (info == null) {
+        FileInfo f = DirectoryManager.lookup(fileName);
+        if (f == null) {
             System.out.println("File not found: " + fileName);
             return;
         }
 
-        int diskNum = info.diskNumber;
-        int start   = info.startingSector;
-        int length  = info.fileLength;
-
-        // 2. Ask for a printer (blocks if none free)
-        int printerID = printerManager.request();  
-        Printer printer = printerManager.get(printerID);
-
-        // 3. Read from disk sector-by-sector and print each line
-        Disk disk = diskManager.getDisk(diskNum);
-
-        for (int i = 0; i < length; i++) {
-            line.setLength(0);       // clear buffer before reading
-            disk.read(start + i, line);
+        int start = f.startingSector;
+        int p = PrinterManager.request();
+        for (int i = 0; i < f.fileLength; i++) {
+            disk.read(start+i, line);
             printer.print(line);
         }
-
-        // 4. Release the printer
-        printerManager.release(printerID);
-    }
 }
 
 class FileInfo
