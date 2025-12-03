@@ -7,20 +7,20 @@ gen: gen.cpp
 	g++ gen.cpp -o gen
 
 all.tar: gen
-	gen
+	./gen
 	tar cf all.tar Makefile MANIFEST.MF USER* *.java
 
 clean:
-	/bin/rm -f gen *.class 141OS.jar USER* alt141OS.jar
+	/bin/rm -f gen *.class 141OS.jar USER* alt141OS.jar PRINTER* all.tar
 
 141OS.jar: MainClass.java
 	javac MainClass.java
 	jar cmvf MANIFEST.MF 141OS.jar  *.class
 
-testHW8: 141OS.jar
+testHW8: 141OS.jar	all.tar
 	java -jar 141OS.jar -1 -1 -1
 
-testHW9: 141OS.jar
+testHW9: 141OS.jar	all.tar
 	java -jar 141OS.jar -26 -2 -3
 
 alt141OS.jar: MainClass.java
