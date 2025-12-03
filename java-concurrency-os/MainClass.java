@@ -38,15 +38,11 @@ class Disk {
 
 class Printer {
     static final int PRINT_DELAY = 275;
-    String fileName;
+    FileWriter writer;
 
     Printer(int id) {
-        fileName = "PRINTER" + id;
-
-        // Create/clear the file at startup (optional but useful)
         try {
-            FileWriter fw = new FileWriter(fileName, false);
-            fw.close();
+            writer = new FileWriter("PRINTER" + id, true); // true = append mode
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,10 +55,11 @@ class Printer {
             e.printStackTrace();
         }
 
-        try (FileWriter writer = new FileWriter(fileName, true)) {
+        try {
             writer.write(data.toString());
             writer.write("\n");       
-        } catch (Exception e) {
+            writer.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -76,16 +73,15 @@ class PrintJobThread extends Thread {
 
     StringBuffer line;
 
-    PrintJobThread(String fileToPrint) {
+    PrintJobThread(String fileToPrint, Disk disk, DirectoryManager directoryManager) {
         this.fileName = fileToPrint;
         this.line = new StringBuffer();
-        this.disk = new Disk();
-        this.directoryManager = new DirectoryManager();
-        this.printer = new Printer();
+        this.disk = disk;
+        this.directoryManager = directoryManager;
     }
 
     public void run() {
-        FileInfo f = DirectoryManager.lookup(fileName);
+        FileInfo f = directoryManager.lookup(new StringBuffer(fileName));
         if (f == null) {
             System.out.println("File not found: " + fileName);
             return;
@@ -93,10 +89,12 @@ class PrintJobThread extends Thread {
 
         int start = f.startingSector;
         int p = PrinterManager.request();
+        printer = new Printer(p);
         for (int i = 0; i < f.fileLength; i++) {
             disk.read(start+i, line);
             printer.print(line);
         }
+    }
 }
 
 class FileInfo
@@ -128,18 +126,46 @@ class ResourceManager
 
 class DiskManager
 {
+    static int nextFreeSector = 0;
+    
+    static int request() {
+        return 0;
+    }
+    
+    static int getNextFreeSectorOnDisk(int d) {
+        return nextFreeSector;
+    }
+    
+    static void setNextFreeSectorOnDisk(int d, int sector) {
+        nextFreeSector = sector;
+    }
+    
+    static void release(int d) {
+    }
 }
 
 class PrinterManager
 {
+    static int request() {
+        return 0;
+    }
 }
 
 class UserThread extends Thread {
     String fileName;
     String line;
 
-    UserThread(String fileName) {
-        this.fileName = fileName;
+    // temp vars for this hw
+    Disk disk;
+    DirectoryManager directoryManager;
+    Printer printer;
+    static int nextFreeSector = 0;
+
+    UserThread(String fileName, Disk disk, DirectoryManager directoryManager, Printer printer) {
+        this.fileName = "USER" + fileName;
+        this.disk = disk;
+        this.directoryManager = directoryManager;
+        this.printer = printer;
     }
 
     void processCommandsIn(BufferedReader inputFile) throws IOException {
@@ -149,7 +175,11 @@ class UserThread extends Thread {
             String[] args = line.split(" ");
             switch (args[0]) {
                 case ".save":
-                    saveFile(args[1], args[2]);
+                    try {
+                        saveFile(args[1], inputFile);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case ".print":
                     printFile(args[1]);
@@ -170,10 +200,10 @@ class UserThread extends Thread {
             String line = reader.readLine();
             if (line == null) break;                 // safety
             if (line.equals(".end")) {
-                DirectoryManager.enter(name, makeFileInfo(d, offset, fileLines));
+                directoryManager.enter(new StringBuffer(fileName), makeFileInfo(d, offset, fileLines));
                 break;
             }
-            disks[d].write(offset + fileLines, line);
+            disk.write(offset + fileLines, new StringBuffer(line));
             fileLines++;
         }
 
@@ -181,8 +211,22 @@ class UserThread extends Thread {
         DiskManager.release(d);
     }
 
+    FileInfo makeFileInfo(int d, int offset, int fileLines) {
+        FileInfo info = new FileInfo();
+        info.diskNumber = d;
+        info.startingSector = offset;
+        info.fileLength = fileLines;
+        return info;
+    }
+
     void printFile(String fileName) {
-        new PrintJobThread(fileName).start();
+        PrintJobThread pjt = new PrintJobThread(fileName, disk, directoryManager);
+        pjt.start();
+        try {
+            pjt.join();  // Wait for print job to complete before continuing
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void run() {
@@ -206,9 +250,19 @@ public class MainClass
 {
     public static void main(String args[])
     {
+        System.out.println("*** 141 OS Simulation ***");
+
         for (int i=0; i<args.length; ++i)
             System.out.println("Args[" + i + "] = " + args[i]);
-            
-        System.out.println("*** 141 OS Simulation ***");
+
+        Disk disk = new Disk();
+        Printer printer = new Printer(0);
+        DirectoryManager directoryManager = new DirectoryManager();
+
+        UserThread user = new UserThread(String.valueOf(0), disk, directoryManager, printer);
+        user.start();
+        try {
+            user.join();
+        } catch (InterruptedException ie) {}
     }
 }
