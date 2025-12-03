@@ -246,24 +246,24 @@ class UserThread extends Thread {
     
 }
 
-public class MainClass
+public class OperatingSystemSimulator
 {
-    private static MainClass instance;
+    private static OperatingSystemSimulator instance;
 
     static UserThread[] users;
     static DiskManager diskManager;
     static PrinterManager printerManager;
 
-    private MainClass(int numUsers, int numDisks, int numPrinters) 
+    private OperatingSystemSimulator(int numUsers, int numDisks, int numPrinters) 
     {
         users = new UserThread[numUsers];
         diskManager = new DiskManager(numDisks);
         printerManager = new PrinterManager(numPrinters);
     }
 
-    static MainClass getInstance(int numUsers, int numDisks, int numPrinters) {
+    static OperatingSystemSimulator getInstance(int numUsers, int numDisks, int numPrinters) {
         if (instance == null) { 
-            instance = new MainClass(numUsers, numDisks, numPrinters);
+            instance = new OperatingSystemSimulator(numUsers, numDisks, numPrinters);
         }
         return instance;
     }
@@ -286,7 +286,7 @@ public class MainClass
 
     public static void main(String args[])
     {
-        System.out.println("*** 141 OS Simulation ***");
+        System.out.println("*** Operating System Simulation ***");
         for (int i=0; i<args.length; ++i) {
             System.out.println("Args[" + i + "] = " + args[i]);
         }
@@ -295,7 +295,7 @@ public class MainClass
         int NUM_DISKS = Integer.parseInt(args[1]);
         int NUM_PRINTERS = Integer.parseInt(args[2]);
 
-        MainClass os = MainClass.getInstance(NUM_USERS, NUM_DISKS, NUM_PRINTERS);
+        OperatingSystemSimulator os = OperatingSystemSimulator.getInstance(NUM_USERS, NUM_DISKS, NUM_PRINTERS);
         os.startUserThreads();
         os.joinUserThreads();
     }
