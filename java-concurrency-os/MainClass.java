@@ -248,21 +248,55 @@ class UserThread extends Thread {
 
 public class MainClass
 {
+    private static MainClass instance;
+
+    static UserThread[] users;
+    static DiskManager diskManager;
+    static PrinterManager printerManager;
+
+    private MainClass(int numUsers, int numDisks, int numPrinters) 
+    {
+        users = new UserThread[numUsers];
+        diskManager = new DiskManager(numDisks);
+        printerManager = new PrinterManager(numPrinters);
+    }
+
+    static MainClass getInstance(int numUsers, int numDisks, int numPrinters) {
+        if (instance == null) { 
+            instance = new MainClass(numUsers, numDisks, numPrinters);
+        }
+        return instance;
+    }
+
+    void startUserThreads() {
+        for(var u : users) {
+            u.start();
+        }
+    }
+
+    void joinUserThreads() {
+        for(var u : users) {
+            try {
+                u.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String args[])
     {
         System.out.println("*** 141 OS Simulation ***");
-
-        for (int i=0; i<args.length; ++i)
+        for (int i=0; i<args.length; ++i) {
             System.out.println("Args[" + i + "] = " + args[i]);
+        }
 
-        Disk disk = new Disk();
-        Printer printer = new Printer(0);
-        DirectoryManager directoryManager = new DirectoryManager();
+        int NUM_USERS = Integer.parseInt(args[0]);
+        int NUM_DISKS = Integer.parseInt(args[1]);
+        int NUM_PRINTERS = Integer.parseInt(args[2]);
 
-        UserThread user = new UserThread(String.valueOf(0), disk, directoryManager, printer);
-        user.start();
-        try {
-            user.join();
-        } catch (InterruptedException ie) {}
+        MainClass os = MainClass.getInstance(NUM_USERS, NUM_DISKS, NUM_PRINTERS);
+        os.startUserThreads();
+        os.joinUserThreads();
     }
 }
