@@ -65,3 +65,17 @@ swipl -s main.pl
 ---
 
 ### java-concurrency-os
+A simplified operating system simulation that demonstrates core concurrency and synchronization mechanisms in Java. The system models users, disks, and printers as parallel processes and coordinates them through scheduling, synchronization, and safe resource sharing. It handles file creation, storage, and printing across multiple devices, demonstrating how threads and synchronization primitives keep hardware resources busy and maintain correctness in a multithreaded environment.
+
+#### To build and run the Java Concurrency OS using the provided Makefile:
+
+**Run Test:**
+```bash
+make testOneThread  # Test with 1 user, 1 disk, 1 printer
+make testAllThreads # Test with 26 users, 2 disks, 3 printers
+```
+
+**Clean build artifacts:**
+```bash
+make clean
+```
