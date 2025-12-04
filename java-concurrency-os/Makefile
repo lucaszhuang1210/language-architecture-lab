@@ -13,8 +13,8 @@ all.tar: gen
 clean:
 	/bin/rm -f gen *.class 141OS.jar USER* alt141OS.jar PRINTER* all.tar
 
-141OS.jar: MainClass.java
-	javac MainClass.java
+141OS.jar: OperatingSystemSimulator.java
+	javac OperatingSystemSimulator.java
 	jar cmvf MANIFEST.MF 141OS.jar  *.class
 
 testHW8: 141OS.jar	all.tar
@@ -23,8 +23,8 @@ testHW8: 141OS.jar	all.tar
 testHW9: 141OS.jar	all.tar
 	java -jar 141OS.jar -26 -2 -3
 
-alt141OS.jar: MainClass.java
-	javac MainClass.java
+alt141OS.jar: OperatingSystemSimulator.java
+	javac OperatingSystemSimulator.java
 	jar cvf alt141OS.jar *.class
 
 alttest: alt141OS.jar
