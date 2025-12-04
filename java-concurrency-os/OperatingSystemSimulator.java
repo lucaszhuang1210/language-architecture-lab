@@ -293,13 +293,13 @@ public class OperatingSystemSimulator
     }
 
     void startUserThreads() {
-        for(var u : users) {
+        for(UserThread u : users) {
             u.start();
         }
     }
 
     void joinUserThreads() {
-        for(var u : users) {
+        for(UserThread u : users) {
             try {
                 u.join();
             } catch (InterruptedException e) {
