@@ -11,21 +11,21 @@ all.tar: gen
 	tar cf all.tar Makefile MANIFEST.MF USER* *.java
 
 clean:
-	/bin/rm -f gen *.class 141OS.jar USER* alt141OS.jar PRINTER* all.tar
+	/bin/rm -f gen *.class OS.jar USER* altOS.jar PRINTER* all.tar
 
-141OS.jar: OperatingSystemSimulator.java
+OS.jar: OperatingSystemSimulator.java
 	javac OperatingSystemSimulator.java
-	jar cmvf MANIFEST.MF 141OS.jar  *.class
+	jar cmvf MANIFEST.MF OS.jar  *.class
 
-testHW8: 141OS.jar	all.tar
-	java -jar 141OS.jar -1 -1 -1
+testHW8: OS.jar	all.tar
+	java -jar OS.jar -1 -1 -1
 
-testHW9: 141OS.jar	all.tar
-	java -jar 141OS.jar -26 -2 -3
+testHW9: OS.jar	all.tar
+	java -jar OS.jar -26 -2 -3
 
-alt141OS.jar: OperatingSystemSimulator.java
+altOS.jar: OperatingSystemSimulator.java
 	javac OperatingSystemSimulator.java
-	jar cvf alt141OS.jar *.class
+	jar cvf altOS.jar *.class
 
-alttest: alt141OS.jar
-	java -cp alt141OS.jar MainClass
+alttest: altOS.jar
+	java -cp altOS.jar MainClass
