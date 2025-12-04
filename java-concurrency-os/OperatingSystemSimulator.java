@@ -65,37 +65,34 @@ class Printer {
     }
 }
 
+
 class PrintJobThread extends Thread {
     String fileName;
-    Disk disk;
-    DirectoryManager directoryManager;
-    Printer printer;
 
-    StringBuffer line;
-
-    PrintJobThread(String fileToPrint, Disk disk, DirectoryManager directoryManager) {
+    PrintJobThread(String fileToPrint) {
         this.fileName = fileToPrint;
-        this.line = new StringBuffer();
-        this.disk = disk;
-        this.directoryManager = directoryManager;
     }
 
     public void run() {
-        FileInfo f = directoryManager.lookup(new StringBuffer(fileName));
+        FileInfo f = DirectoryManager.lookup(fileName);
         if (f == null) {
             System.out.println("File not found: " + fileName);
             return;
         }
 
-        int start = f.startingSector;
-        int p = PrinterManager.request();
-        printer = new Printer(p);
+        int printerID = PrinterManager.request();
+        Printer printer = new Printer(printerID);
+        Disk diskToRead = DiskManager.disks[f.diskNumber];
+
         for (int i = 0; i < f.fileLength; i++) {
-            disk.read(start+i, line);
-            printer.print(line);
+            int sectorToRead = f.startingSector + i;
+            printer.print(diskToRead.sectors[sectorToRead]);
         }
+        
+        PrinterManager.release(printerID);
     }
 }
+
 
 class FileInfo
 {
@@ -106,19 +103,20 @@ class FileInfo
 
 
 class DirectoryManager {
-    private Hashtable<String, FileInfo> T = new Hashtable<String, FileInfo>();
+    private static Hashtable<String, FileInfo> T = new Hashtable<String, FileInfo>();
 
     DirectoryManager() {}
 
-    void enter(StringBuffer fileName, FileInfo file) {
+    static void enter(StringBuffer fileName, FileInfo file) {
         T.put(fileName.toString(), file);
     }
 
-    FileInfo lookup(StringBuffer fileName)
+    static FileInfo lookup(StringBuffer fileName)
     {
         return T.get(fileName.toString());
     }
 }
+
 
 class ResourceManager {
     boolean isFree[];
@@ -152,23 +150,28 @@ class ResourceManager {
 }
 
 
-class DiskManager
-{
-    static int nextFreeSector = 0;
-    
-    static int request() {
-        return 0;
+class DiskManager extends ResourceManager {
+    static int[] diskOffsets;
+    static Disk[] disks;
+
+    DiskManager(int numDisk) {
+        super(numDisk);
+        diskOffsets = new int[numDisk];
+        this.startDisks(numDisk);
+    }
+
+    void startDisks(int numDisk) {
+        disks = new Disk[numDisk];
+        for (int i=0; i<disks.length; ++i)
+            disks[i] = new Disk();
     }
     
-    static int getNextFreeSectorOnDisk(int d) {
-        return nextFreeSector;
+    static int getNextFreeSectorOnDisk(int diskNumber) {
+        return diskOffsets[diskNumber];
     }
     
-    static void setNextFreeSectorOnDisk(int d, int sector) {
-        nextFreeSector = sector;
-    }
-    
-    static void release(int d) {
+    static void setNextFreeSectorOnDisk(int diskNumber, int sector) {
+        diskOffsets[diskNumber] = sector;
     }
 }
 
@@ -182,12 +185,6 @@ class PrinterManager
 class UserThread extends Thread {
     String fileName;
     String line;
-
-    // temp vars for this hw
-    Disk disk;
-    DirectoryManager directoryManager;
-    Printer printer;
-    static int nextFreeSector = 0;
 
     UserThread(String fileName, Disk disk, DirectoryManager directoryManager, Printer printer) {
         this.fileName = "USER" + fileName;
