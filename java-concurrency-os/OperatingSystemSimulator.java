@@ -74,13 +74,13 @@ class PrintJobThread extends Thread {
     }
 
     public void run() {
-        FileInfo f = DirectoryManager.lookup(fileName);
+        FileInfo f = DirectoryManager.lookup(new StringBuffer(fileName));
         if (f == null) {
             System.out.println("File not found: " + fileName);
             return;
         }
 
-        int printerID = PrinterManager.request();
+        int printerID = OperatingSystemSimulator.printerManager.request();
         Printer printer = new Printer(printerID);
         Disk diskToRead = DiskManager.disks[f.diskNumber];
 
@@ -89,7 +89,7 @@ class PrintJobThread extends Thread {
             printer.print(diskToRead.sectors[sectorToRead]);
         }
         
-        PrinterManager.release(printerID);
+        OperatingSystemSimulator.printerManager.release(printerID);
     }
 }
 
@@ -175,22 +175,20 @@ class DiskManager extends ResourceManager {
     }
 }
 
-class PrinterManager
-{
-    static int request() {
-        return 0;
+
+class PrinterManager extends ResourceManager {
+    PrinterManager(int numPrinters) {
+        super(numPrinters);
     }
 }
+
 
 class UserThread extends Thread {
     String fileName;
     String line;
 
-    UserThread(String fileName, Disk disk, DirectoryManager directoryManager, Printer printer) {
-        this.fileName = "USER" + fileName;
-        this.disk = disk;
-        this.directoryManager = directoryManager;
-        this.printer = printer;
+    UserThread(String fileName) {
+        this.fileName = fileName;
     }
 
     void processCommandsIn(BufferedReader inputFile) throws IOException {
@@ -216,26 +214,6 @@ class UserThread extends Thread {
         }
     }
 
-    void saveFile(String fileName, BufferedReader reader) throws Exception {
-        int d = DiskManager.request();   // DiskNumber
-        int offset = DiskManager.getNextFreeSectorOnDisk(d);
-        int fileLines = 0;
-
-        while (true) {
-            String line = reader.readLine();
-            if (line == null) break;                 // safety
-            if (line.equals(".end")) {
-                directoryManager.enter(new StringBuffer(fileName), makeFileInfo(d, offset, fileLines));
-                break;
-            }
-            disk.write(offset + fileLines, new StringBuffer(line));
-            fileLines++;
-        }
-
-        DiskManager.setNextFreeSectorOnDisk(d, offset + fileLines);
-        DiskManager.release(d);
-    }
-
     FileInfo makeFileInfo(int d, int offset, int fileLines) {
         FileInfo info = new FileInfo();
         info.diskNumber = d;
@@ -244,8 +222,28 @@ class UserThread extends Thread {
         return info;
     }
 
+    void saveFile(String fileName, BufferedReader reader) throws Exception {
+        int d = OperatingSystemSimulator.diskManager.request();   // DiskNumber
+        int offset = DiskManager.getNextFreeSectorOnDisk(d);
+        int fileLines = 0;
+
+        while (true) {
+            String line = reader.readLine();
+            if (line == null) break;
+            if (line.equals(".end")) {
+                DirectoryManager.enter(new StringBuffer(fileName), makeFileInfo(d, offset, fileLines));
+                break;
+            }
+            DiskManager.disks[d].write(offset + fileLines, new StringBuffer(line));
+            fileLines++;
+        }
+
+        DiskManager.setNextFreeSectorOnDisk(d, offset + fileLines);
+        OperatingSystemSimulator.diskManager.release(d);
+    }
+
     void printFile(String fileName) {
-        PrintJobThread pjt = new PrintJobThread(fileName, disk, directoryManager);
+        PrintJobThread pjt = new PrintJobThread(fileName);
         pjt.start();
         try {
             pjt.join();  // Wait for print job to complete before continuing
@@ -270,6 +268,7 @@ class UserThread extends Thread {
     }
     
 }
+
 
 public class OperatingSystemSimulator
 {
@@ -321,6 +320,9 @@ public class OperatingSystemSimulator
         int NUM_PRINTERS = Integer.parseInt(args[2]);
 
         OperatingSystemSimulator os = OperatingSystemSimulator.getInstance(NUM_USERS, NUM_DISKS, NUM_PRINTERS);
+        for(int i = 0; i < NUM_USERS; i++) {
+            OperatingSystemSimulator.users[i] = new UserThread("USER" + i);
+        }
         os.startUserThreads();
         os.joinUserThreads();
     }
