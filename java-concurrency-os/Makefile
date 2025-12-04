@@ -1,4 +1,4 @@
-def: testHW8
+def: testOneThread
 
 dist: all.tar clean
 	chmod a+r all.tar
@@ -17,10 +17,10 @@ OS.jar: OperatingSystemSimulator.java
 	javac OperatingSystemSimulator.java
 	jar cmvf MANIFEST.MF OS.jar  *.class
 
-testHW8: OS.jar	all.tar
+testOneThread: OS.jar	all.tar
 	java -jar OS.jar -1 -1 -1
 
-testHW9: OS.jar	all.tar
+testAllThreads: OS.jar	all.tar
 	java -jar OS.jar -26 -2 -3
 
 altOS.jar: OperatingSystemSimulator.java
