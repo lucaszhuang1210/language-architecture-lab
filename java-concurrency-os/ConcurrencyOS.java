@@ -80,7 +80,7 @@ class PrintJobThread extends Thread {
             return;
         }
 
-        int printerID = OperatingSystemSimulator.printerManager.request();
+        int printerID = ConcurrencyOS.printerManager.request();
         Printer printer = new Printer(printerID);
         Disk diskToRead = DiskManager.disks[f.diskNumber];
 
@@ -89,7 +89,7 @@ class PrintJobThread extends Thread {
             printer.print(diskToRead.sectors[sectorToRead]);
         }
         
-        OperatingSystemSimulator.printerManager.release(printerID);
+        ConcurrencyOS.printerManager.release(printerID);
     }
 }
 
@@ -223,7 +223,7 @@ class UserThread extends Thread {
     }
 
     void saveFile(String fileName, BufferedReader reader) throws Exception {
-        int d = OperatingSystemSimulator.diskManager.request();   // DiskNumber
+        int d = ConcurrencyOS.diskManager.request();   // DiskNumber
         int offset = DiskManager.getNextFreeSectorOnDisk(d);
         int fileLines = 0;
 
@@ -239,7 +239,7 @@ class UserThread extends Thread {
         }
 
         DiskManager.setNextFreeSectorOnDisk(d, offset + fileLines);
-        OperatingSystemSimulator.diskManager.release(d);
+        ConcurrencyOS.diskManager.release(d);
     }
 
     void printFile(String fileName) {
@@ -270,24 +270,24 @@ class UserThread extends Thread {
 }
 
 
-public class OperatingSystemSimulator
+public class ConcurrencyOS
 {
-    private static OperatingSystemSimulator instance;
+    private static ConcurrencyOS instance;
 
     static UserThread[] users;
     static DiskManager diskManager;
     static PrinterManager printerManager;
 
-    private OperatingSystemSimulator(int numUsers, int numDisks, int numPrinters) 
+    private ConcurrencyOS(int numUsers, int numDisks, int numPrinters) 
     {
         users = new UserThread[numUsers];
         diskManager = new DiskManager(numDisks);
         printerManager = new PrinterManager(numPrinters);
     }
 
-    static OperatingSystemSimulator getInstance(int numUsers, int numDisks, int numPrinters) {
+    static ConcurrencyOS getInstance(int numUsers, int numDisks, int numPrinters) {
         if (instance == null) { 
-            instance = new OperatingSystemSimulator(numUsers, numDisks, numPrinters);
+            instance = new ConcurrencyOS(numUsers, numDisks, numPrinters);
         }
         return instance;
     }
@@ -319,9 +319,9 @@ public class OperatingSystemSimulator
         int NUM_DISKS    = Integer.parseInt(args[1].substring(1));
         int NUM_PRINTERS = Integer.parseInt(args[2].substring(1));
 
-        OperatingSystemSimulator os = OperatingSystemSimulator.getInstance(NUM_USERS, NUM_DISKS, NUM_PRINTERS);
+        ConcurrencyOS os = ConcurrencyOS.getInstance(NUM_USERS, NUM_DISKS, NUM_PRINTERS);
         for(int i = 0; i < NUM_USERS; i++) {
-            OperatingSystemSimulator.users[i] = new UserThread("USER" + i);
+            ConcurrencyOS.users[i] = new UserThread("USER" + i);
         }
         os.startUserThreads();
         os.joinUserThreads();

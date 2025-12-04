@@ -13,8 +13,8 @@ all.tar: gen
 clean:
 	/bin/rm -f gen *.class OS.jar USER* altOS.jar PRINTER* all.tar
 
-OS.jar: OperatingSystemSimulator.java
-	javac OperatingSystemSimulator.java
+OS.jar: ConcurrencyOS.java
+	javac ConcurrencyOS.java
 	jar cmvf MANIFEST.MF OS.jar  *.class
 
 testOneThread: OS.jar	all.tar
@@ -23,8 +23,8 @@ testOneThread: OS.jar	all.tar
 testAllThreads: OS.jar	all.tar
 	java -jar OS.jar -26 -2 -3
 
-altOS.jar: OperatingSystemSimulator.java
-	javac OperatingSystemSimulator.java
+altOS.jar: ConcurrencyOS.java
+	javac ConcurrencyOS.java
 	jar cvf altOS.jar *.class
 
 alttest: altOS.jar
