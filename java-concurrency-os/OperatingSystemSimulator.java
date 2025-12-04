@@ -315,9 +315,9 @@ public class OperatingSystemSimulator
             System.out.println("Args[" + i + "] = " + args[i]);
         }
 
-        int NUM_USERS = Integer.parseInt(args[0]);
-        int NUM_DISKS = Integer.parseInt(args[1]);
-        int NUM_PRINTERS = Integer.parseInt(args[2]);
+        int NUM_USERS    = Integer.parseInt(args[0].substring(1));
+        int NUM_DISKS    = Integer.parseInt(args[1].substring(1));
+        int NUM_PRINTERS = Integer.parseInt(args[2].substring(1));
 
         OperatingSystemSimulator os = OperatingSystemSimulator.getInstance(NUM_USERS, NUM_DISKS, NUM_PRINTERS);
         for(int i = 0; i < NUM_USERS; i++) {
